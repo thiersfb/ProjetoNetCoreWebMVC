@@ -37,7 +37,9 @@ namespace ProjetoNetCoreWebMVC
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             services.AddDbContext<ProjetoNetCoreWebMVCContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("ProjetoNetCoreWebMVCContext")));
+                    //options.UseSqlServer(Configuration.GetConnectionString("ProjetoNetCoreWebMVCContext")));
+                    options.UseMySql(Configuration.GetConnectionString("ProjetoNetCoreWebMVCContext"), builder => //necessário instalar o provider do banco a ser utilizado
+                    builder.MigrationsAssembly("ProjetoNetCoreWebMVC")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
