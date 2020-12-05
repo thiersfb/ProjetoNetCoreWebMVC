@@ -9,6 +9,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using ProjetoNetCoreWebMVC.Data;
 
 namespace ProjetoNetCoreWebMVC
 {
@@ -33,6 +35,9 @@ namespace ProjetoNetCoreWebMVC
 
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            services.AddDbContext<ProjetoNetCoreWebMVCContext>(options =>
+                    options.UseSqlServer(Configuration.GetConnectionString("ProjetoNetCoreWebMVCContext")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
