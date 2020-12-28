@@ -55,11 +55,33 @@ namespace ProjetoNetCoreWebMVC.Controllers
             //return View();
         }
 
-        public IActionResult Delete()
+        // GET: Sellers/Delete
+        public IActionResult Delete(int? id)
         {
-            var list = _sellerService.FindAll();
-            return View(list); //na exibição é passada a lista de dados obtida através do metodo FindAll
-            //return View();
+            if(id == null)
+            {
+                return NotFound();
+            }
+
+            var obj = _sellerService.FindById(id.Value);
+            
+            if(obj == null)
+            {
+                return NotFound();
+            }
+
+            return View(obj);
+        }
+
+        // POST: Sellers/Delete
+        //[HttpPost, ActionName("Delete")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Delete(int id)
+        {
+            _sellerService.Remove(id);
+            //var list = _sellerService.FindAll();
+            return RedirectToAction(nameof(Index));
         }
     }
 }
