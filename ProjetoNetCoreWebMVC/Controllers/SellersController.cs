@@ -2,6 +2,7 @@
 using ProjetoNetCoreWebMVC.Models;
 using ProjetoNetCoreWebMVC.Models.ViewModels;
 using ProjetoNetCoreWebMVC.Services;
+using ProjetoNetCoreWebMVC.Services.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +17,7 @@ namespace ProjetoNetCoreWebMVC.Controllers
         private readonly DepartmentService _departmentService;
 
         //metodo construtor, realiza injeção de dependência
-        public  SellersController(SellerService sellerService, DepartmentService departmentService)
+        public SellersController(SellerService sellerService, DepartmentService departmentService)
         {
             _sellerService = sellerService;
             _departmentService = departmentService;
@@ -50,14 +51,14 @@ namespace ProjetoNetCoreWebMVC.Controllers
         // GET: Sellers/Delete
         public IActionResult Delete(int? id)
         {
-            if(id == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
             var obj = _sellerService.FindById(id.Value);
-            
-            if(obj == null)
+
+            if (obj == null)
             {
                 return NotFound();
             }
@@ -92,6 +93,51 @@ namespace ProjetoNetCoreWebMVC.Controllers
             }
 
             return View(obj);
+        }
+
+        // GET: Seller/Edit/
+        public IActionResult Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var obj = _sellerService.FindById(id.Value);
+            if (obj == null)
+            {
+                return NotFound();
+            }
+
+            List<Department> departments = _departmentService.FindAll();
+            SellerFormViewModel viewModel = new SellerFormViewModel { Seller = obj, Departments = departments };
+
+            return View(viewModel);
+        }
+
+        // POST: Sellers/Edit
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(int id, Seller seller)
+        {
+            if (id != seller.Id)
+            {
+                return BadRequest();
+            }
+
+            try
+            {
+                _sellerService.Update(seller);
+                return RedirectToAction(nameof(Index));
+            }
+            catch (NotFoundException)
+            {
+                return NotFound();
+            }
+            catch (DbConcurrencyException)
+            {
+                return BadRequest();
+            }
         }
 
     }

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
+using ProjetoNetCoreWebMVC.Services.Exceptions;
 
 namespace ProjetoNetCoreWebMVC.Services
 {
@@ -40,6 +41,24 @@ namespace ProjetoNetCoreWebMVC.Services
             var obj = _context.Seller.Find(id);
             _context.Seller.Remove(obj);    //objeto removido do DbSet
             _context.SaveChanges();
+        }
+
+        public void Update(Seller obj)
+        {
+            if (!_context.Seller.Any(x => x.Id == obj.Id))
+            {
+                throw new NotFoundException("Id not found");
+            }
+
+            try
+            {
+                _context.Update(obj);    //objeto atualizado no DbSet
+                _context.SaveChanges();
+            }
+            catch (DbUpdateConcurrencyException e)
+            {
+                throw new DbConcurrencyException(e.Message);
+            }
         }
 
     }
