@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ProjetoNetCoreWebMVC.Models;
+using ProjetoNetCoreWebMVC.Models.ViewModels;
 using ProjetoNetCoreWebMVC.Services;
 using System;
 using System.Collections.Generic;
@@ -12,11 +13,13 @@ namespace ProjetoNetCoreWebMVC.Controllers
     {
 
         private readonly SellerService _sellerService;
+        private readonly DepartmentService _departmentService;
 
         //metodo construtor, realiza injeção de dependência
-        public  SellersController(SellerService sellerService)
+        public  SellersController(SellerService sellerService, DepartmentService departmentService)
         {
             _sellerService = sellerService;
+            _departmentService = departmentService;
         }
 
         //metodo controlador
@@ -30,7 +33,9 @@ namespace ProjetoNetCoreWebMVC.Controllers
         // GET: Sellers/Create
         public IActionResult Create()
         {
-            return View();
+            var departments = _departmentService.FindAll();
+            var viewModel = new SellerFormViewModel { Departments = departments };
+            return View(viewModel);
         }
 
         [HttpPost]
@@ -42,23 +47,7 @@ namespace ProjetoNetCoreWebMVC.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // POST: Sellers/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Create([Bind("Id,Name")] Sellers sellers)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        _context.Add(department);
-        //        await _context.SaveChangesAsync();
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    return View(department);
-        //}
-        //
-
+        
         public IActionResult Details()
         {
             var list = _sellerService.FindAll();

@@ -42,8 +42,10 @@ namespace ProjetoNetCoreWebMVC
                     options.UseMySql(Configuration.GetConnectionString("ProjetoNetCoreWebMVCContext"), builder => //necessário instalar o provider do banco a ser utilizado
                     builder.MigrationsAssembly("ProjetoNetCoreWebMVC")));
 
-            services.AddScoped<SeedingService>();   //registra no sistema de injeção de independencia
-            services.AddScoped<SellerService>();   //registra no sistema de injeção de independencia
+            //registra no sistema de injeção de independencia
+            services.AddScoped<SeedingService>();
+            services.AddScoped<SellerService>();
+            services.AddScoped<DepartmentService>();
 
         }
 
