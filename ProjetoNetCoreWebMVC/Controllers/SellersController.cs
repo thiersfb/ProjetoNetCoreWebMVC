@@ -47,14 +47,6 @@ namespace ProjetoNetCoreWebMVC.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        
-        public IActionResult Details()
-        {
-            var list = _sellerService.FindAll();
-            return View(list); //na exibição é passada a lista de dados obtida através do metodo FindAll
-            //return View();
-        }
-
         // GET: Sellers/Delete
         public IActionResult Delete(int? id)
         {
@@ -83,5 +75,24 @@ namespace ProjetoNetCoreWebMVC.Controllers
             //var list = _sellerService.FindAll();
             return RedirectToAction(nameof(Index));
         }
+
+        // GET: Sellers/Details
+        public IActionResult Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var obj = _sellerService.FindById(id.Value);
+
+            if (obj == null)
+            {
+                return NotFound();
+            }
+
+            return View(obj);
+        }
+
     }
 }
