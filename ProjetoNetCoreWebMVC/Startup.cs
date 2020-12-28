@@ -11,6 +11,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using ProjetoNetCoreWebMVC.Data;
+using ProjetoNetCoreWebMVC.Services;
 
 namespace ProjetoNetCoreWebMVC
 {
@@ -42,6 +43,7 @@ namespace ProjetoNetCoreWebMVC
                     builder.MigrationsAssembly("ProjetoNetCoreWebMVC")));
 
             services.AddScoped<SeedingService>();   //registra no sistema de injeção de independencia
+            services.AddScoped<SellerService>();   //registra no sistema de injeção de independencia
 
         }
 
