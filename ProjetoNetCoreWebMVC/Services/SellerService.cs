@@ -22,6 +22,10 @@ namespace ProjetoNetCoreWebMVC.Services
             return _context.Seller.ToList();    //acessa a fonte de dados relacionada à tabela e converter para uma lista
         }
 
-
+        public void Insert(Seller obj)
+        {
+            _context.Add(obj);
+            _context.SaveChanges();
+        }
     }
 }
