@@ -6,6 +6,7 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using ProjetoNetCoreWebMVC.Services.Exceptions;
+using Microsoft.EntityFrameworkCore;
 
 namespace ProjetoNetCoreWebMVC.Services
 {
@@ -18,34 +19,36 @@ namespace ProjetoNetCoreWebMVC.Services
             _context = context;
         }
 
-        //retorna do banco a lista de todos os sellers
-        public List<Seller> FindAll()
+        //retorna do banco a lista de todos os sellers  de maneira assíncrona para que a execução não bloqueie o processamento da aplicação
+        public async Task<List<Seller>> FindAllAsync()
         {
-            return _context.Seller.ToList();    //acessa a fonte de dados relacionada à tabela e converter para uma lista
+            return await _context.Seller.OrderBy(x => x.Name).ToListAsync();
+            //return await _context.Seller.ToListAsync();    //acessa a fonte de dados relacionada à tabela e converter para uma lista
         }
 
-        public void Insert(Seller obj)
+        public async Task InsertAsync(Seller obj)
         {
             //obj.Department = _context.Department.First();
             _context.Add(obj);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
-        public Seller FindById(int id)
+        public async Task<Seller> FindByIdAsync(int id)
         {
-            return _context.Seller.Include(obj => obj.Department).FirstOrDefault(obj => obj.Id == id);  //"include" realiza o inner join das tabelas na expressão Lambda do Linq
+            return await _context.Seller.Include(obj => obj.Department).FirstOrDefaultAsync(obj => obj.Id == id);  //"include" realiza o inner join das tabelas na expressão Lambda do Linq
         }
 
-        public void Remove(int id)
+        public async Task RemoveAsync(int id)
         {
-            var obj = _context.Seller.Find(id);
+            var obj = await _context.Seller.FindAsync(id);
             _context.Seller.Remove(obj);    //objeto removido do DbSet
-            _context.SaveChanges();
+            _context.SaveChangesAsync();
         }
 
-        public void Update(Seller obj)
+        public async Task UpdateAsync(Seller obj)
         {
-            if (!_context.Seller.Any(x => x.Id == obj.Id))
+            bool hasAny = await _context.Seller.AnyAsync(x => x.Id == obj.Id);
+            if (!hasAny)
             {
                 throw new NotFoundException("Id not found");
             }
@@ -53,7 +56,7 @@ namespace ProjetoNetCoreWebMVC.Services
             try
             {
                 _context.Update(obj);    //objeto atualizado no DbSet
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException e)
             {
