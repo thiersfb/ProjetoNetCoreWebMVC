@@ -6,7 +6,6 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using ProjetoNetCoreWebMVC.Services.Exceptions;
-using Microsoft.EntityFrameworkCore;
 
 namespace ProjetoNetCoreWebMVC.Services
 {
