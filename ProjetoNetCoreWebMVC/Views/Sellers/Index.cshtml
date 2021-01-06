@@ -6,11 +6,8 @@
 
 <h2>@ViewData["Title"]</h2>
 
-@*<p>Sellers index page</p>*@
-
-
 <p>
-    <a asp-action="Create" class="btn btn-default">+ Create New</a>
+    <button class="btn btn-primary btn-sm create" ><i class="glyphicon glyphicon-user"></i> Create New</button>
 </p>
 
 <table class="table table-hover">
@@ -28,32 +25,88 @@
             <th>
                 @Html.DisplayNameFor(model => model.BaseSalary)
             </th>
-            <th>Actions</th>
+            <th>
+                Details
+            </th>
+            <th>
+                Edit
+            </th>
+            <th>
+                Delete
+            </th>
+            @*<th>Actions</th>*@
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Email)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.BirthDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.BaseSalary)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BirthDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BaseSalary)
+                </td>
+                <td>
+
+                    <button class="btn btn-success btn-sm details" data-id="@item.Id"><i class="glyphicon glyphicon-th-list"></i> @*Details*@</button>
+                </td>
+                <td>
+                    <button class="btn btn-info btn-sm edit" data-id="@item.Id"><i class="glyphicon glyphicon-edit"></i> @*Edit*@</button>
+                </td>
+                <td>
+                    <button class="btn btn-danger btn-sm delete" data-id="@item.Id"><i class="glyphicon glyphicon-remove"></i> @*Remove*@</button>
+                </td>
+            </tr>
         }
     </tbody>
 </table>
+<div id="modal" class="modal fade" role="dialog" />
 
+
+@section scripts{
+
+    <script>
+        $(function () {
+
+                $(".create").click(function () {
+                    $("#modal").load("/Sellers/Create", function () {
+                        $("#modal").modal("show");
+                    })
+                });
+
+                $(".details").click(function () {
+                    var id = $(this).attr("data-id");
+                    $("#modal").load("/Sellers/Details/" + id, function () {
+                        $("#modal").modal("show");
+                    })
+                });
+
+                $(".edit").click(function () {
+                    var id = $(this).attr("data-id");
+                    $("#modal").load("/Sellers/Edit/" + id, function () {
+                        $("#modal").modal("show");
+                    })
+                });
+
+                $(".delete").click(function () {
+                    var id = $(this).attr("data-id");
+                    $("#modal").load("/Sellers/Delete/" + id, function () {
+                        $("#modal").modal("show");
+                    })
+                });
+
+
+         
+
+    });
+
+
+    </script>
+}

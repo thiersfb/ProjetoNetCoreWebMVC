@@ -35,9 +35,12 @@ namespace ProjetoNetCoreWebMVC.Controllers
         // GET: Sellers/Create
         public async Task<IActionResult> Create()
         {
-            var departments = await _departmentService.FindAllAsync();
+            //var departments = await _departmentService.FindAllAsync();
+            List<Department> departments = await _departmentService.FindAllAsync();
             var viewModel = new SellerFormViewModel { Departments = departments };
-            return View(viewModel);
+            //return View(viewModel);
+            return PartialView(viewModel);
+
         }
 
         [HttpPost]
@@ -47,13 +50,23 @@ namespace ProjetoNetCoreWebMVC.Controllers
             //valida se o formulário foi preenchido
             if (!ModelState.IsValid)
             {
-                var departments = await _departmentService.FindAllAsync();
+                List<Department> departments = await _departmentService.FindAllAsync();
                 var viewModel = new SellerFormViewModel { Seller = seller, Departments = departments };
+                //var viewModel = ( Create() , new SellerFormViewModel { Seller = seller, Departments = departments });
                 return View(viewModel);
+                //return PartialView(nameof(Index));
+                //return PartialView(viewModel);
+
+                //return PartialView("Create", viewModel);
+                //return Json(viewModel);
+                //return PartialView(viewModel, seller);
             }
+
+
             await _sellerService.InsertAsync(seller);
             //return RedirectToAction("Index");
             return RedirectToAction(nameof(Index));
+            //return PartialView(nameof(Index));
         }
 
         // GET: Sellers/Delete
@@ -62,7 +75,8 @@ namespace ProjetoNetCoreWebMVC.Controllers
             if (id == null)
             {
                 //return NotFound();
-                return RedirectToAction(nameof(Error), new { message = "Id not provided" });
+                //return RedirectToAction(nameof(Error), new { message = "Id not provided" });
+                return PartialView(nameof(Error), new { message = "Id not found" });
             }
 
             var obj = await _sellerService.FindByIdAsync(id.Value);
@@ -70,10 +84,15 @@ namespace ProjetoNetCoreWebMVC.Controllers
             if (obj == null)
             {
                 //return NotFound();
-                return RedirectToAction(nameof(Error), new { message = "Id not found" });
+                //return RedirectToAction(nameof(Error), new { message = "Id not found" });
+                return PartialView(nameof(Error), new { message = "Id not found" });
+
+                //return RedirectToAction("Index");
+                //return RedirectToAction(nameof(Index));
             }
 
-            return View(obj);
+            //return View(obj);
+            return PartialView(obj);
         }
 
         // POST: Sellers/Delete
@@ -110,7 +129,8 @@ namespace ProjetoNetCoreWebMVC.Controllers
                 return RedirectToAction(nameof(Error), new { message = "Id not found" });
             }
 
-            return View(obj);
+            //return View(obj);
+            return PartialView(obj);
         }
 
         // GET: Seller/Edit/
@@ -132,7 +152,8 @@ namespace ProjetoNetCoreWebMVC.Controllers
             List<Department> departments = await _departmentService.FindAllAsync();
             SellerFormViewModel viewModel = new SellerFormViewModel { Seller = obj, Departments = departments };
 
-            return View(viewModel);
+            //return View(viewModel);
+            return PartialView(viewModel);
         }
 
         // POST: Sellers/Edit
@@ -145,28 +166,34 @@ namespace ProjetoNetCoreWebMVC.Controllers
             {
                 var departments = await _departmentService.FindAllAsync();
                 var viewModel = new SellerFormViewModel { Seller = seller, Departments = departments };
+
                 return View(viewModel);
+                //return PartialView(viewModel);
             }
             if (id != seller.Id)
             {
                 //return BadRequest();
-                return RedirectToAction(nameof(Error), new { message = "Id mistach" });
+                //return RedirectToAction(nameof(Error), new { message = "Id mismatch" });
+                return PartialView(nameof(Error), new { message = "Id mismatch" });
+
             }
 
             try
             {
                 await _sellerService.UpdateAsync(seller);
                 return RedirectToAction(nameof(Index));
+                //return PartialView(nameof(Index));
             }
             catch (ApplicationException e)
             {
                 //return NotFound();
                 return RedirectToAction(nameof(Error), new { message = e.Message });
+                //return PartialView(nameof(Error), new { message = e.Message });
             }
         }
 
 
-        // GET: Sellers/Eror
+        // GET: Sellers/Error
         public IActionResult Error(string message)
         {
             var viewModel = new ErrorViewModel
