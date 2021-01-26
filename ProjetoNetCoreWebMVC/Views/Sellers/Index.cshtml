@@ -1,14 +1,12 @@
 ﻿@model IEnumerable<ProjetoNetCoreWebMVC.Models.Seller>
 
-@{
-    ViewData["Title"] = "Sellers";
-}
+@{ ViewData["Title"] = "Sellers"; }
 
 <h2>@ViewData["Title"]</h2>
 
-<p>
-    <button class="btn btn-primary btn-sm create" ><i class="glyphicon glyphicon-user"></i> Create New</button>
-</p>
+<button type="button" class="btn-primary btn-sm create" data-toggle="ajax-modal" data-target="#sellerCreate" data-url="@Url.Action("Create")">
+    <i class="glyphicon glyphicon-user"></i> Create New
+</button>
 
 <table class="table table-hover">
     <thead>
@@ -25,6 +23,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.BaseSalary)
             </th>
+            @*<th>Actions</th>*@
             <th>
                 Details
             </th>
@@ -34,7 +33,6 @@
             <th>
                 Delete
             </th>
-            @*<th>Actions</th>*@
         </tr>
     </thead>
     <tbody>
@@ -53,60 +51,37 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.BaseSalary)
                 </td>
-                <td>
+                @*
+                    <td>
+                            <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                            <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                            <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    </td>
+                *@
 
-                    <button class="btn btn-success btn-sm details" data-id="@item.Id"><i class="glyphicon glyphicon-th-list"></i> @*Details*@</button>
-                </td>
                 <td>
-                    <button class="btn btn-info btn-sm edit" data-id="@item.Id"><i class="glyphicon glyphicon-edit"></i> @*Edit*@</button>
+                    <button type="button" class="btn btn-success btn-sm details" data-id="@item.Id" data-toggle="ajax-modal" data-target="#sellerDetails" data-url="@Url.Action("Details")">
+                        <i class="glyphicon glyphicon-th-list"></i>@*Details*@
+                    </button>
                 </td>
+
                 <td>
-                    <button class="btn btn-danger btn-sm delete" data-id="@item.Id"><i class="glyphicon glyphicon-remove"></i> @*Remove*@</button>
+                    <button type="button" class="btn btn-info btn-sm edit" data-id="@item.Id" data-toggle="ajax-modal" data-target="#sellerEdit" data-url="@Url.Action("Edit")">
+                        <i class="glyphicon glyphicon-edit"></i>@*Edit*@
+                    </button>
                 </td>
+
+                <td>
+                    <button type="button" class="btn btn-danger btn-sm delete" data-id="@item.Id" data-toggle="ajax-modal" data-target="#sellerDelete" data-url="@Url.Action("Delete")">
+                        <i class="glyphicon glyphicon-remove"></i>@*Remove*@
+                    </button>
+                </td>
+
             </tr>
         }
     </tbody>
 </table>
-<div id="modal" class="modal fade" role="dialog" />
 
 
-@section scripts{
+<div id="modal-placeholder"></div>
 
-    <script>
-        $(function () {
-
-                $(".create").click(function () {
-                    $("#modal").load("/Sellers/Create", function () {
-                        $("#modal").modal("show");
-                    })
-                });
-
-                $(".details").click(function () {
-                    var id = $(this).attr("data-id");
-                    $("#modal").load("/Sellers/Details/" + id, function () {
-                        $("#modal").modal("show");
-                    })
-                });
-
-                $(".edit").click(function () {
-                    var id = $(this).attr("data-id");
-                    $("#modal").load("/Sellers/Edit/" + id, function () {
-                        $("#modal").modal("show");
-                    })
-                });
-
-                $(".delete").click(function () {
-                    var id = $(this).attr("data-id");
-                    $("#modal").load("/Sellers/Delete/" + id, function () {
-                        $("#modal").modal("show");
-                    })
-                });
-
-
-         
-
-    });
-
-
-    </script>
-}

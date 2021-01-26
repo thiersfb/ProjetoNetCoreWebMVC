@@ -1,19 +1,19 @@
 ﻿@model ProjetoNetCoreWebMVC.Models.Seller
 
-@{
-    ViewData["Title"] = "Details";
-}
+@{ ViewData["Title"] = "Details"; }
 
 @*<h2>@ViewData["Title"]</h2>*@
 
-<div class="modal-dialog">
-    <div class="modal-content">
-        <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
-            <h4 class="modal-title">Seller's Details</h4>
-        </div>
-        <div class="modal-body">
-            @*<hr />*@
+<!-- Modal -->
+<div class="modal fade" id="sellerDetails" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Seller Details</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
             <dl class="dl-horizontal">
                 <dt>
                     @Html.DisplayNameFor(model => model.Name)
@@ -39,64 +39,21 @@
                 <dd>
                     @Html.DisplayFor(model => model.BaseSalary)
                 </dd>
+
+
                 <dt>
                     @Html.DisplayNameFor(model => model.Department)
                 </dt>
                 <dd>
                     @Html.DisplayFor(model => model.Department.Name)
                 </dd>
+
             </dl>
+            <div class="modal-footer">
+                <input type="button" value="Fechar" class="btn btn-default" data-dismiss="modal" />
+                @*<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>*@
+                @*<button type="button" class="btn btn-primary" data-save="modal">Save</button>*@
+            </div>
         </div>
-        <div class="modal-footer">
-            <input type="button" value="Fechar" class="btn btn-default" data-dismiss="modal" />
-            @*<button type="button" value="Fechar" class="btn btn-danger" data-dismiss="modal"></button>*@
-        </div>
-    </div><!-- /.modal-content -->
-</div><!-- /.modal-dialog -->
-@*</div>*@
-
-@*<div>
-        <h4>Sellers</h4>
-        <hr />
-        <dl class="dl-horizontal">
-            <dt>
-                @Html.DisplayNameFor(model => model.Name)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.Name)
-            </dd>
-            <dt>
-                @Html.DisplayNameFor(model => model.Email)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.Email)
-            </dd>
-            <dt>
-                @Html.DisplayNameFor(model => model.BirthDate)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.BirthDate)
-            </dd>
-            <dt>
-                @Html.DisplayNameFor(model => model.BaseSalary)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.BaseSalary)
-            </dd>
-            <dt>
-                @Html.DisplayNameFor(model => model.Department)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.Department.Name)
-            </dd>
-
-        </dl>
     </div>
-    <div>
-        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-default">Edit</a> |
-        <a asp-action="Index">Back to List</a>
-    </div>*@
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+</div>
