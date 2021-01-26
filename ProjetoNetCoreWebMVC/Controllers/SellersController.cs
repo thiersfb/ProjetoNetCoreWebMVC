@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ProjetoNetCoreWebMVC.Data;
 using ProjetoNetCoreWebMVC.Models;
 using ProjetoNetCoreWebMVC.Models.ViewModels;
 using ProjetoNetCoreWebMVC.Services;
@@ -8,11 +9,13 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using X.PagedList;
 
 namespace ProjetoNetCoreWebMVC.Controllers
 {
     public class SellersController : Controller
     {
+        private readonly ProjetoNetCoreWebMVCContext _context;
 
         private readonly SellerService _sellerService;
         private readonly DepartmentService _departmentService;
@@ -25,10 +28,19 @@ namespace ProjetoNetCoreWebMVC.Controllers
         }
 
         //metodo controlador
-        public async Task<IActionResult> Index()
+        //public async Task<IActionResult> Index()
+        //{
+        //    var list = await _sellerService.FindAllAsync();
+        //    return View(list); //na exibição é passada a lista de dados obtida através do metodo FindAll
+        //    //return View();
+        //}
+
+        public async Task<IActionResult> Index(int? pagina)
         {
+            int paginaTamanho = 10;
+            int paginaNumero = (pagina ?? 1);
             var list = await _sellerService.FindAllAsync();
-            return View(list); //na exibição é passada a lista de dados obtida através do metodo FindAll
+            return View(list.ToPagedList(paginaNumero, paginaTamanho)); //na exibição é passada a lista de dados obtida através do metodo FindAll
             //return View();
         }
 

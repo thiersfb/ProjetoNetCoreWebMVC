@@ -1,37 +1,47 @@
-﻿@model IEnumerable<ProjetoNetCoreWebMVC.Models.Seller>
+﻿@*@model IEnumerable<ProjetoNetCoreWebMVC.Models.Seller>*@
+@using X.PagedList.Mvc.Core;
+@using X.PagedList;
+@model IPagedList<ProjetoNetCoreWebMVC.Models.Seller>
 
 @{ ViewData["Title"] = "Sellers"; }
 
 <h2>@ViewData["Title"]</h2>
 
 <button type="button" class="btn-primary btn-sm create" data-toggle="ajax-modal" data-target="#sellerCreate" data-url="@Url.Action("Create")">
-    <i class="glyphicon glyphicon-user"></i> Create New
+    <i class="glyphicon glyphicon-user"></i> Criar Novo
 </button>
 
 <table class="table table-hover">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                @*@Html.DisplayNameFor(model => model.Name)*@
+                @Html.DisplayName("Nome")
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Email)
+                @*@Html.DisplayNameFor(model => model.Email)*@
+                @Html.DisplayName("E-mail")
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.BirthDate)
+                @*@Html.DisplayNameFor(model => model.BirthDate)*@
+                @Html.DisplayName("Data de Nascimento")
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.BaseSalary)
+                @*@Html.DisplayNameFor(model => model.BaseSalary)*@
+                @Html.DisplayName("Salário Base")
             </th>
             @*<th>Actions</th>*@
             <th>
-                Details
+                @*Details*@
+                Detalhes
             </th>
             <th>
-                Edit
+                @*Edit*@
+                Editar
             </th>
             <th>
-                Delete
+                @*Delete*@
+                Excluir
             </th>
         </tr>
     </thead>
@@ -60,19 +70,19 @@
                 *@
 
                 <td>
-                    <button type="button" class="btn btn-success btn-sm details" data-id="@item.Id" data-toggle="ajax-modal" data-target="#sellerDetails" data-url="@Url.Action("Details")">
+                    <button type="button" class="btn btn-success btn-sm details" title="Detalhes" data-id="@item.Id" data-toggle="ajax-modal" data-target="#sellerDetails" data-url="@Url.Action("Details")">
                         <i class="glyphicon glyphicon-th-list"></i>@*Details*@
                     </button>
                 </td>
 
                 <td>
-                    <button type="button" class="btn btn-info btn-sm edit" data-id="@item.Id" data-toggle="ajax-modal" data-target="#sellerEdit" data-url="@Url.Action("Edit")">
+                    <button type="button" class="btn btn-info btn-sm edit" title="Editar" data-id="@item.Id" data-toggle="ajax-modal" data-target="#sellerEdit" data-url="@Url.Action("Edit")">
                         <i class="glyphicon glyphicon-edit"></i>@*Edit*@
                     </button>
                 </td>
 
                 <td>
-                    <button type="button" class="btn btn-danger btn-sm delete" data-id="@item.Id" data-toggle="ajax-modal" data-target="#sellerDelete" data-url="@Url.Action("Delete")">
+                    <button type="button" class="btn btn-danger btn-sm delete" title="Excluir" data-id="@item.Id" data-toggle="ajax-modal" data-target="#sellerDelete" data-url="@Url.Action("Delete")">
                         <i class="glyphicon glyphicon-remove"></i>@*Remove*@
                     </button>
                 </td>
@@ -85,3 +95,46 @@
 
 <div id="modal-placeholder"></div>
 
+<div class="row">
+    <div class="col-md-8">
+
+        
+        @Html.PagedListPager(Model, pagina => Url.Action("Index", "Sellers", new { pagina }))
+    </div>
+    <div class="col-md-4">
+        Listando registros de @Model.FirstItemOnPage a @Model.LastItemOnPage de um total de @Model.TotalItemCount
+    </div>
+</div>
+
+@*
+    <div>
+        Página @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)
+        of @Model.PageCount
+
+        @if (Model.HasPreviousPage)
+        {
+            @Html.ActionLink("<<", "Index", new { pagina = 1, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter })
+            @Html.Raw(" ");
+            @Html.ActionLink("< Anterior", "Index", new { pagina = Model.PageNumber - 1, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter })
+        }
+        else
+        {
+            @:<<
+            @Html.Raw(" ");
+            @:< Anterior
+        }
+
+        @if (Model.HasNextPage)
+        {
+            @Html.ActionLink("Próxima >", "Index", new { pagina = Model.PageNumber + 1, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter })
+            @Html.Raw(" ");
+            @Html.ActionLink(">>", "Index", new { pagina = Model.PageCount, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter })
+        }
+        else
+        {
+            @:Próxima >
+            @Html.Raw(" ")
+            @:>>
+        }
+    </div>
+*@

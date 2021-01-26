@@ -10,27 +10,33 @@ namespace ProjetoNetCoreWebMVC.Models
     {
         public int Id { get; set; }
 
-        [Required(ErrorMessage = "{0} required")]
-        [StringLength(60, MinimumLength = 3, ErrorMessage = "{0} size should be between {2} and {1}")]      //{0} refere-se ao atributo, {1} refere-se ao valor maximo, {2} refere-se ao valor minimo
+        [Required(ErrorMessage = "{0} é obrigatório")]
+        [Display(Name = "Nome")]
+        [StringLength(60, MinimumLength = 3, ErrorMessage = "O tamanho do {0} deve ser entre {2} e {1}")]      //{0} refere-se ao atributo, {1} refere-se ao valor maximo, {2} refere-se ao valor minimo
         public string Name { get; set; }
 
-        [Required(ErrorMessage = "{0} required")]
-        [EmailAddress(ErrorMessage = "Enter a valid e-mail")]
+        [Required(ErrorMessage = "{0} é obrigatório")]
+        [Display(Name = "E-mail")]
+        [EmailAddress(ErrorMessage = "Entre com um e-mail válido")]
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
 
-        [Required(ErrorMessage = "{0} required")]
-        [Display(Name = "Birth Date")]
+        [Required(ErrorMessage = "{0} é obrigatório")]
+        [Display(Name = "Data de Nascimento")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime BirthDate { get; set; }
 
-        [Required(ErrorMessage = "{0} required")]
-        [Range(100.0, 50000.0, ErrorMessage = "{0} must be from {1} to {2}")]
-        [Display(Name = "Base Salary")]
+        [Required(ErrorMessage = "{0} é obrigatório")]
+        [Range(100.0, 50000.0, ErrorMessage = "{0} deve ser entre {1} e {2}")]
+        [Display(Name = "Salário Base")]
         [DisplayFormat(DataFormatString = "{0:F2}")]    //zero indica o valor do atributo, F2 indica que o mesmo terá duas casas decimais
         public double BaseSalary { get; set; }
+
+        [Display(Name = "Departamento")]
         public Department Department { get; set; }
+
+        [Display(Name = "Departamento")]
         public int DepartmentId { get; set; }
         public ICollection<SalesRecord> Sales { get; set; } = new List<SalesRecord>();
 
