@@ -10,12 +10,14 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using X.PagedList;
+using ClosedXML.Excel;
+using System.IO;
 
 namespace ProjetoNetCoreWebMVC.Controllers
 {
     public class SellersController : Controller
     {
-        private readonly ProjetoNetCoreWebMVCContext _context;
+        //private readonly ProjetoNetCoreWebMVCContext _context;
 
         private readonly SellerService _sellerService;
         private readonly DepartmentService _departmentService;
@@ -29,18 +31,13 @@ namespace ProjetoNetCoreWebMVC.Controllers
 
         //metodo controlador
         //public async Task<IActionResult> Index()
-        //{
-        //    var list = await _sellerService.FindAllAsync();
-        //    return View(list); //na exibição é passada a lista de dados obtida através do metodo FindAll
-        //    //return View();
-        //}
-
         public async Task<IActionResult> Index(int? pagina)
         {
             int paginaTamanho = 10;
             int paginaNumero = (pagina ?? 1);
             var list = await _sellerService.FindAllAsync();
             return View(list.ToPagedList(paginaNumero, paginaTamanho)); //na exibição é passada a lista de dados obtida através do metodo FindAll
+            //return View(list); //na exibição é passada a lista de dados obtida através do metodo FindAll
             //return View();
         }
 
@@ -198,6 +195,42 @@ namespace ProjetoNetCoreWebMVC.Controllers
             };
 
             return View(viewModel);
+        }
+
+
+        public async Task<IActionResult> ExportToExcel()
+        {
+            var list = await _sellerService.FindAllAsync();
+            
+            using(var workbook = new XLWorkbook())
+            {
+                var worksheet = workbook.Worksheets.Add("Sellers");
+                var currentRow = 1;
+                worksheet.Cell(currentRow, 1).Value = "ID";
+                worksheet.Cell(currentRow, 2).Value = "Nome";
+                worksheet.Cell(currentRow, 3).Value = "E-mail";
+                worksheet.Cell(currentRow, 4).Value = "Data de Nascimento";
+                worksheet.Cell(currentRow, 5).Value = "Salário Base";
+
+                foreach (var item in list)
+                {
+                    currentRow++;
+                    worksheet.Cell(currentRow, 1).Value = item.Id;
+                    worksheet.Cell(currentRow, 2).Value = item.Name;
+                    worksheet.Cell(currentRow, 3).Value = item.Email;
+                    worksheet.Cell(currentRow, 4).Value = item.BirthDate;
+                    worksheet.Cell(currentRow, 5).Value = item.BaseSalary;
+
+                }
+
+                using(var stream = new MemoryStream())
+                {
+                    workbook.SaveAs(stream);
+                    var content = stream.ToArray();
+                    return File(content, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "Sellers_"+ DateTime.Now +".xlsx");
+                }
+            }
+            
         }
 
     }

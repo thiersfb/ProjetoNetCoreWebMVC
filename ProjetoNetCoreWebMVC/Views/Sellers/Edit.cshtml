@@ -14,12 +14,10 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form asp-action="Edit">
-                <div class="modal-body">
+            <div class="modal-body">
+                <form asp-action="Edit">
                     <input type="hidden" asp-for="Seller.Id" />
                     <input type="hidden" name="IsValid" value="@ViewData.ModelState.IsValid.ToString()" />
-                    @Html.AntiForgeryToken()
-                    @Html.ValidationSummary(true)
                     <div class="form-group">
                         <label asp-for="Seller.Name" class="control-label"></label>
                         <input asp-for="Seller.Name" class="form-control" />
@@ -45,8 +43,8 @@
                         <label asp-for="Seller.DepartmentId" class="control-label"></label>
                         <select asp-for="Seller.DepartmentId" asp-items="@(new SelectList(Model.Departments,"Id","Name"))" class="form-control"></select>
                     </div>
-                </div>
-            </form>
+                </form>
+            </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
                 <button type="button" class="btn btn-primary" data-save="modal">Salvar</button>

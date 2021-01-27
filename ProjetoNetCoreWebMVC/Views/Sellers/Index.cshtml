@@ -7,28 +7,40 @@
 
 <h2>@ViewData["Title"]</h2>
 
-<button type="button" class="btn-primary btn-sm create" data-toggle="ajax-modal" data-target="#sellerCreate" data-url="@Url.Action("Create")">
-    <i class="glyphicon glyphicon-user"></i> Criar Novo
-</button>
+
+
+<div class="row">
+    <div class="col-md-10">
+        <button type="button" class="btn-primary btn-sm create" data-toggle="ajax-modal" data-target="#sellerCreate" data-url="@Url.Action("Create")">
+            <i class="glyphicon glyphicon-user"></i> Criar Novo
+        </button>
+    </div>
+    <div class="col-md-2">
+
+        @*@Html.ActionLink("Export Para Excel", "ExportToExcel", "Sellers", new { @class = "btn-info btn-sm" })*@
+        @*<input type="button" class="btn-info btn-sm excel" value="Exportar para Excel" onclick="location.href='@Url.Action("ExportToExcel", "Sellers")'"/>*@
+
+        <button type="button" class="btn-info btn-sm excel" onclick="location.href='@Url.Action("ExportToExcel", "Sellers")'">
+            <i class="glyphicon glyphicon-export"></i> Exportar para Excel
+        </button>
+
+    </div>
+</div>
 
 <table class="table table-hover">
     <thead>
         <tr>
             <th>
-                @*@Html.DisplayNameFor(model => model.Name)*@
-                @Html.DisplayName("Nome")
+                @Html.DisplayNameFor(model => model.FirstOrDefault().Name)
             </th>
             <th>
-                @*@Html.DisplayNameFor(model => model.Email)*@
-                @Html.DisplayName("E-mail")
+                @Html.DisplayNameFor(model => model.FirstOrDefault().Email)
             </th>
             <th>
-                @*@Html.DisplayNameFor(model => model.BirthDate)*@
-                @Html.DisplayName("Data de Nascimento")
+                @Html.DisplayNameFor(model => model.FirstOrDefault().BirthDate)
             </th>
             <th>
-                @*@Html.DisplayNameFor(model => model.BaseSalary)*@
-                @Html.DisplayName("Salário Base")
+                @Html.DisplayNameFor(model => model.FirstOrDefault().BaseSalary)
             </th>
             @*<th>Actions</th>*@
             <th>
@@ -48,46 +60,46 @@
     <tbody>
         @foreach (var item in Model)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Email)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.BirthDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.BaseSalary)
-                </td>
-                @*
-                    <td>
-                            <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                            <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                            <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                    </td>
-                *@
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BirthDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BaseSalary)
+            </td>
+            @*
+        <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+        </td>
+            *@
 
-                <td>
-                    <button type="button" class="btn btn-success btn-sm details" title="Detalhes" data-id="@item.Id" data-toggle="ajax-modal" data-target="#sellerDetails" data-url="@Url.Action("Details")">
-                        <i class="glyphicon glyphicon-th-list"></i>@*Details*@
-                    </button>
-                </td>
+            <td>
+                <button type="button" class="btn btn-success btn-sm details" title="Detalhes" data-id="@item.Id" data-toggle="ajax-modal" data-target="#sellerDetails" data-url="@Url.Action("Details")">
+                    <i class="glyphicon glyphicon-th-list"></i>@*Details*@
+                </button>
+            </td>
 
-                <td>
-                    <button type="button" class="btn btn-info btn-sm edit" title="Editar" data-id="@item.Id" data-toggle="ajax-modal" data-target="#sellerEdit" data-url="@Url.Action("Edit")">
-                        <i class="glyphicon glyphicon-edit"></i>@*Edit*@
-                    </button>
-                </td>
+            <td>
+                <button type="button" class="btn btn-info btn-sm edit" title="Editar" data-id="@item.Id" data-toggle="ajax-modal" data-target="#sellerEdit" data-url="@Url.Action("Edit")">
+                    <i class="glyphicon glyphicon-edit"></i>@*Edit*@
+                </button>
+            </td>
 
-                <td>
-                    <button type="button" class="btn btn-danger btn-sm delete" title="Excluir" data-id="@item.Id" data-toggle="ajax-modal" data-target="#sellerDelete" data-url="@Url.Action("Delete")">
-                        <i class="glyphicon glyphicon-remove"></i>@*Remove*@
-                    </button>
-                </td>
+            <td>
+                <button type="button" class="btn btn-danger btn-sm delete" title="Excluir" data-id="@item.Id" data-toggle="ajax-modal" data-target="#sellerDelete" data-url="@Url.Action("Delete")">
+                    <i class="glyphicon glyphicon-remove"></i>@*Remove*@
+                </button>
+            </td>
 
-            </tr>
+        </tr>
         }
     </tbody>
 </table>
@@ -97,8 +109,6 @@
 
 <div class="row">
     <div class="col-md-8">
-
-        
         @Html.PagedListPager(Model, pagina => Url.Action("Index", "Sellers", new { pagina }))
     </div>
     <div class="col-md-4">
